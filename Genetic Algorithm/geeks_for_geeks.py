@@ -4,7 +4,7 @@
 import random
 
 # Number of individuals in each generation
-POPULATION_SIZE = 10
+POPULATION_SIZE = 100
 
 # Valid genes
 GENES = '''abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOP

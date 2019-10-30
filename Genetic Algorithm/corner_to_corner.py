@@ -11,32 +11,26 @@ POPULATION_SIZE = 100
 GENES = ['r','d','u','l']
 
 # Target string to be generated
-TARGET = [-10,-15]
+TARGET = [100,-167]
 
 gnome_len = int(math.fabs(TARGET[0])+math.fabs(TARGET[1]))
 
 class Individual(object):
-    '''
-    Class representing individual in population
-    '''
+
     def __init__(self, chromosome):
         self.chromosome = chromosome
         self.fitness = self.cal_fitness()
 
     @classmethod
     def mutated_genes(self,genome_len = -1):
-        '''
-        create random genes for mutation
-        '''
+
         global GENES
         gene = random.choice(GENES)
         return gene
 
     @classmethod
     def create_gnome(self):
-        '''
-        create chromosome or string of genes
-        '''
+
         global TARGET
         global gnome_len
         return [self.mutated_genes() for _ in range(gnome_len)]
@@ -60,11 +54,7 @@ class Individual(object):
         return Individual(child_chromosome)
 
     def cal_fitness(self):
-        '''
-        Calculate fittness score, it is the number of
-        characters in string which differ from target
-        string.
-        '''
+
         global TARGET
         location = [0,0]
 
@@ -134,7 +124,6 @@ def main():
               population[0].fitness))
 
         generation += 1
-
 
     print("Generation: {}\tString: {}\tFitness: {}".\
           format(generation,
