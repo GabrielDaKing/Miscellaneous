@@ -3,6 +3,8 @@
 
 import math
 import random
+import turtle
+from time import sleep
 
 # Number of individuals in each generation
 POPULATION_SIZE = 100
@@ -11,9 +13,20 @@ POPULATION_SIZE = 100
 GENES = ['r','d','u','l']
 
 # Target string to be generated
-TARGET = [100,-167]
+TARGET = [20,20]
 
 gnome_len = int(math.fabs(TARGET[0])+math.fabs(TARGET[1]))
+
+colors = ['yellow', 'gold', 'orange', 'red', 'maroon', 'violet', 'magenta', 'purple', 'navy', 'blue', 'skyblue', 'cyan', 'turquoise', 'lightgreen', 'green', 'darkgreen', 'chocolate', 'brown', 'black', 'gray', 'white']
+turtles = [turtle.Turtle() for i in range(10)]
+#turtles = [turtle.Turtle()]
+h = 0
+for t in turtles:
+	t.speed(1000)
+	h+=1
+
+wn = turtle.Screen()
+wn.title("Paths")
 
 class Individual(object):
 
@@ -22,7 +35,7 @@ class Individual(object):
         self.fitness = self.cal_fitness()
 
     @classmethod
-    def mutated_genes(self,genome_len = -1):
+    def mutated_genes(self,gnome_len = -1):
 
         global GENES
         gene = random.choice(GENES)
@@ -71,6 +84,59 @@ class Individual(object):
         fitness = math.sqrt((TARGET[0]-location[0])**2+(TARGET[1]-location[1])**2)
 
         return fitness
+
+def draw_population(population):
+
+	#TESTING
+	for t in turtles:
+		t.speed(1000)
+	turtles[0].color('red')
+
+	point = turtle.Turtle()
+	point.up()
+	point.color('green')
+	point.goto(200,-200)
+
+	for i in range(gnome_len):
+		
+		for j in range(len(population)):
+			if i==0:
+				if population[j].chromosome[i]=='l':
+					turtles[j].right(180)
+				elif population[j].chromosome[i]=='u':
+					turtles[j].left(90)
+				elif population[j].chromosome[i]=='d':
+					turtles[j].right(90)
+				
+			else:
+				if population[j].chromosome[i]!=population[j].chromosome[i-1]:
+					if population[j].chromosome[i-1]=='l' and population[j].chromosome[i]=='r':
+						turtles[j].right(180)
+					if population[j].chromosome[i-1]=='l' and population[j].chromosome[i]=='u':
+						turtles[j].right(90)
+					if population[j].chromosome[i-1]=='l' and population[j].chromosome[i]=='d':
+						turtles[j].left(90)
+					if population[j].chromosome[i-1]=='r' and population[j].chromosome[i]=='l':
+						turtles[j].right(180)
+					if population[j].chromosome[i-1]=='r' and population[j].chromosome[i]=='u':
+						turtles[j].left(90)
+					if population[j].chromosome[i-1]=='r' and population[j].chromosome[i]=='d':
+						turtles[j].right(90)
+					if population[j].chromosome[i-1]=='u' and population[j].chromosome[i]=='r':
+						turtles[j].right(90)
+					if population[j].chromosome[i-1]=='u' and population[j].chromosome[i]=='l':
+						turtles[j].left(90)
+					if population[j].chromosome[i-1]=='u' and population[j].chromosome[i]=='d':
+						turtles[j].right(180)
+					if population[j].chromosome[i-1]=='d' and population[j].chromosome[i]=='r':
+						turtles[j].left(90)
+					if population[j].chromosome[i-1]=='d' and population[j].chromosome[i]=='l':
+						turtles[j].right(90)
+					if population[j].chromosome[i-1]=='d' and population[j].chromosome[i]=='u':
+						turtles[j].right(180)
+			turtles[j].forward(10)
+	sleep(3)
+	wn.reset()
 
 # Driver code
 def main():
@@ -124,11 +190,13 @@ def main():
               population[0].fitness))
 
         generation += 1
+        draw_population(population[:10])
 
     print("Generation: {}\tString: {}\tFitness: {}".\
           format(generation,
           "".join(population[0].chromosome),
           population[0].fitness))
+    draw_population([population[0]])
 
 if __name__ == '__main__':
     main()
